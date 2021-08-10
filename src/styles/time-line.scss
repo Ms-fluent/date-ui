@@ -1,0 +1,45 @@
+$ms-time-line-bgColor: rgba(0, 0, 0, 0.5) !default;
+$ms-time-line-header-bgColor: rgba(0, 0, 0, 0.1) !default;
+$ms-time-line-group-borderColor: rgba(255, 255, 255, 0.3) !default;
+$ms-time-line-fontColor: #faf9f8 !default;
+
+$ms-calendar-day-height: 100px !default;
+
+.ms-time-line {
+  display: block;
+  background-color: $ms-time-line-bgColor;
+  color: $ms-time-line-fontColor;
+
+  backdrop-filter: blur(40px);
+
+  padding: 24px;
+}
+
+.ms-time-line-group {
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  display: flex;
+
+  border-bottom: 1px solid $ms-time-line-group-borderColor;
+}
+
+.ms-time-line-item {
+  margin-bottom: 16px;
+}
+
+.ms-time-line-date {
+
+}
+
+.ms-time-line-date-day {
+  text-transform: uppercase;
+}
+
+.ms-time-line-date-date {
+
+}
+
+.ms-time-line-item {
+
+}

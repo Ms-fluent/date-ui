@@ -1,0 +1,33 @@
+<div class="ms-date-picker-layout">
+
+  <ng-container #headerContainer></ng-container>
+
+  <div class="ms-date-picker-navigator">
+    <button (click)="prevMonth()" class="ms-date-picker-button ms-Icon ms-Icon--ChevronLeft"></button>
+
+    <div class="ms-date-picker-month">{{formatMonth()}}</div>
+
+    <button (click)="nextMonth()" class="ms-date-picker-button ms-Icon ms-Icon--ChevronRight"></button>
+  </div>
+
+  <div class="ms-date-picker-body" #bodyElement>
+    <div class="ms-date-picker-dayOfWeeks">
+      <span *ngFor="let dayOfWeek of daysOfWeeks" class="ms-date-picker-dayOfWeek">{{dayOfWeek}}</span>
+    </div>
+
+    <div class="ms-date-picker-days">
+      ng-
+    </div>
+  </div>
+</div>
+
+
+<span *ms-date-picker-day-def="let item" class="ms-date-picker-day"
+      [class.ms-date-picker-day-extra]="item.getMonth() != monthRange.month">
+          {{item.getDate()}}
+        </span>
+
+<div class="ms-date-picker-header" *ms-date-picker-header-def>
+  <div class="ms-date-picker-header-year"> {{year}} </div>
+  <div class="ms-date-picker-header-date"> {{formatDate()}} </div>
+</div>

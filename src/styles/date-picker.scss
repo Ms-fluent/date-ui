@@ -1,0 +1,90 @@
+.ms-date-picker {
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #faf9f8;
+
+  backdrop-filter: blur(40px);
+}
+
+.ms-date-picker-layout {
+
+}
+
+.ms-date-picker-header {
+  padding: 24px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.ms-date-picker-header-date {
+  font-size: 16px;
+}
+
+.ms-date-picker-header-year {
+  opacity: 0.8;
+  font-size: 28px;
+}
+
+.ms-date-picker-navigator {
+  box-sizing: border-box;
+}
+
+.ms-date-picker-body {
+  padding: 0 12px 12px 12px;
+}
+
+.ms-date-picker-month {
+  text-transform: capitalize;
+}
+
+.ms-date-picker-dayOfWeeks {
+  & .ms-date-picker-dayOfWeek {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+}
+
+.ms-date-picker-day {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: rgba(80, 108, 236, 0.7)
+  }
+}
+
+.ms-date-picker-day-extra {
+  opacity: 0.4;
+}
+
+.ms-date-picker-navigator {
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ms-date-picker-button {
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  color: #faf9f8;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+   background-color: rgba(0, 0, 0, 0.3);
+  }
+}

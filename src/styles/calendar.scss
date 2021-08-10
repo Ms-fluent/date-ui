@@ -1,0 +1,70 @@
+$ms-calendar-bgColor: rgba(0, 0, 0, 0.5) !default;
+$ms-calendar-header-bgColor: rgba(0, 0, 0, 0.1) !default;
+$ms-calendar-header-borderColor: rgba(255, 255, 255, 0.3) !default;
+$ms-calendar-fontColor: #faf9f8 !default;
+
+$ms-calendar-day-height: 100px !default;
+
+.ms-calendar {
+  display: block;
+  background-color: $ms-calendar-bgColor;
+  color: $ms-calendar-fontColor;
+
+  backdrop-filter: blur(40px);
+}
+
+.ms-calendar-header {
+  padding: 24px;
+  background-color: $ms-calendar-header-bgColor;
+}
+
+.ms-calendar-header-month {
+  font-size: 24px;
+}
+
+.ms-calendar-header-year {
+  opacity: 0.8;
+  font-size: 28px;
+}
+
+.ms-calendar-body {
+
+}
+
+.ms-calendar-dayOfWeeks {
+  & .ms-calendar-dayOfWeek {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 14.28%;
+    height: 40px;
+    padding-left: 12px;
+  }
+}
+
+.ms-calendar-day {
+  display: inline-block;
+  width: 14.28%;
+  height: $ms-calendar-day-height;
+  cursor: pointer;
+  border-right: 1px solid $ms-calendar-header-borderColor;
+  border-top: 1px solid $ms-calendar-header-borderColor;
+  box-sizing: border-box;
+
+  padding-top: 12px;
+  padding-left: 12px;
+
+  &:hover {
+    background-color: rgba(80, 108, 236, 0.7)
+  }
+}
+
+.ms-calendar-day-extra {
+
+}
+
+.ms-calendar-navigator {
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
