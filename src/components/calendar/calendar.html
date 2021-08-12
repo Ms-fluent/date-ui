@@ -1,11 +1,6 @@
 <div class="ms-calendar-layout">
-  <div class="ms-calendar-header">
-    <div class="ms-calendar-header-month">
-       <span style="font-weight: 700; text-transform: capitalize">{{formatMonth()}}</span>
-      <span style="opacity: 0.8"> {{formatYear()}}</span>
-    </div>
-  </div>
 
+  <ng-container #headerContainer></ng-container>
 
   <div class="ms-calendar-body" #bodyElement>
     <div class="ms-calendar-dayOfWeeks">
@@ -13,12 +8,26 @@
     </div>
 
     <div class="ms-calendar-days">
-      <div class="ms-calendar-days-line" *ngFor="let week of monthRange.getWeeksRanges()">
-        <span *ngFor="let day of week" class="ms-calendar-day"
-              [class.ms-calendar-day-extra]="day.month() != date.getMonth()" >
-          {{day.date()}}
-        </span>
-      </div>
+      <ng-container #dayContainer></ng-container>
     </div>
   </div>
+</div>
+
+
+<span *ms-calendar-day-def="let item, let extra=extra" class="ms-calendar-day"
+      [class.ms-calendar-day-extra]="extra">
+          {{item.getDate()}}
+</span>
+
+
+<div class="ms-calendar-header" *ms-calendar-header-def="let date">
+  <div class="ms-calendar-header-month">
+    <span style="font-weight: 700; text-transform: capitalize">{{ date | date : 'MMMM' }}</span>
+    <span style="opacity: 0.8"> {{ date | date: 'yyyy' }}</span>
+  </div>
+
+  <button ms-calendar-prev>Prev</button>
+  <button ms-calendar-current>Current</button>
+  <button ms-calendar-next>Next</button>
+
 </div>

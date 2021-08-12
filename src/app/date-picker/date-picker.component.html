@@ -1,5 +1,18 @@
 <h1>Date picker</h1>
 
-<MsDatePicker>
+<MsDatePicker [date]="date" #datePicker></MsDatePicker>
 
-</MsDatePicker>
+<div>
+  <input type="text" [(ngModel)]="inputDateValue" placeholder="Date">
+  <button (click)="changeDate()">Change</button>
+</div>
+
+<div>
+  <input type="text" [(ngModel)]="inputMonth" placeholder="month" >
+  <button (click)="changeMonth()">Change</button>
+</div>
+
+<div>
+  <input type="text" [(ngModel)]="inputYear" placeholder="Year">
+  <button (click)="changeYear()">Change</button>
+</div>

@@ -36,8 +36,8 @@ $ms-calendar-day-height: 100px !default;
     display: inline-block;
     box-sizing: border-box;
     width: 14.28%;
-    height: 40px;
-    padding-left: 12px;
+    padding: 12px;
+    overflow: hidden;
   }
 }
 
@@ -59,7 +59,7 @@ $ms-calendar-day-height: 100px !default;
 }
 
 .ms-calendar-day-extra {
-
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .ms-calendar-navigator {

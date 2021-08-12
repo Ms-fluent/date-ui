@@ -18,6 +18,7 @@
 
 .ms-date-picker-header-date {
   font-size: 16px;
+  text-transform: capitalize;
 }
 
 .ms-date-picker-header-year {
@@ -48,10 +49,14 @@
   }
 }
 
+.ms-date-picker-days {
+  display: grid;
+  grid-template-columns: 40px 40px 40px 40px 40px 40px 40px;
+  grid-template-rows: 40px 40px 40px 40px 40px 40px;
+}
+
 .ms-date-picker-day {
   display: inline-block;
-  width: 40px;
-  height: 40px;
   line-height: 40px;
   text-align: center;
   cursor: pointer;

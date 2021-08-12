@@ -1,1 +1,45 @@
-<MsTimeLine [items]="items"></MsTimeLine>
+<div style="display: flex">
+  <MsTimeLine [items]="items">
+    <div *MsTimeLineItemDef="let item"style="display: flex; background-color: rgba(0, 0, 0, 0.3); padding: 4px">
+      <div style="border-right: 3px solid rgba(255, 255, 255, 0.7); ; padding-right: 8px">
+        <div>
+          {{formatDate(item.startDate)}}
+        </div>
+        <div>
+          {{formatDate(item.endDate)}}
+        </div>
+      </div>
+
+      <div>
+        {{item.name}}
+      </div>
+    </div>
+  </MsTimeLine>
+
+  <div style="margin-left: 16px; background-color: rgba(255, 255, 255, 0.7)">
+    <div *ngFor="let item of items" style="margin-top: 12px">
+      {{item.name}}
+      <div>
+        <button (click)="delete(item)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <input type="text" placeholder="Nom" [(ngModel)]="model.name" />
+    </div>
+    <div>
+      <input type="text" placeholder="début" [(ngModel)]="model.startDate" />
+    </div>
+    <div>
+      <input type="text" placeholder="Fin" [(ngModel)]="model.endDate" />
+    </div>
+
+    <div>
+      <button (click)="addCourse()">
+        <i class="ms-Icon ms-Icon--Add"></i>
+        Ajouter</button>
+    </div>
+  </div>
+</div>

@@ -1,18 +1,3 @@
 <div class="ms-time-line-layout" #layout>
-  <div *ngFor="let key of keys" class="ms-time-line-group">
-    <div class="ms-time-line-date">
-      <div class="ms-time-line-date-day">{{days[key.getDay()]}}</div>
-      <div class="ms-time-line-date-date">{{key | date }}</div>
-    </div>
-    <div style="margin-left: 24px">
-      <div class="ms-time-line-item" *ngFor="let item of groups.get(key.getTime())">
-        <div>
-          {{item.startDate.getHours()}}h {{item.startDate.getMinutes()}}
-        </div>
-        <div>
-          {{item.endDate.getHours()}}h {{item.endDate.getMinutes()}}
-        </div>
-      </div>
-    </div>
-  </div>
+  <ng-container #container></ng-container>
 </div>

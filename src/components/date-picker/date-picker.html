@@ -16,7 +16,7 @@
     </div>
 
     <div class="ms-date-picker-days">
-      ng-
+      <ng-container #dayContainer></ng-container>
     </div>
   </div>
 </div>
@@ -25,7 +25,7 @@
 <span *ms-date-picker-day-def="let item" class="ms-date-picker-day"
       [class.ms-date-picker-day-extra]="item.getMonth() != monthRange.month">
           {{item.getDate()}}
-        </span>
+</span>
 
 <div class="ms-date-picker-header" *ms-date-picker-header-def>
   <div class="ms-date-picker-header-year"> {{year}} </div>

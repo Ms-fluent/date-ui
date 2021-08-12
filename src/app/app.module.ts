@@ -12,7 +12,8 @@ import {CalendarComponent} from './calendar/calendar.component';
 import {CalendarModule} from '../components/calendar';
 import {TimeTableComponent} from './time-table/time-table.component';
 import {TimeLineComponent} from './time-line/time-line.component';
-import {MsTimeLineModule} from "../components/time-line";
+import {MsTimeLineModule} from '../components/time-line';
+import {FormsModule} from '@angular/forms';
 
 moment.locale('fr');
 
@@ -27,6 +28,7 @@ moment.locale('fr');
     MsDatePickerModule,
     CalendarModule,
     MsTimeLineModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

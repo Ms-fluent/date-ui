@@ -67,7 +67,7 @@ export class MonthRange {
     return new MonthRange(this.year, this.month - 1);
   }
 
-  setRange() {
+  private setRange() {
     let currentDate = this.first;
     this._range = [];
 
@@ -79,7 +79,7 @@ export class MonthRange {
     }
   }
 
-  setPrevRange() {
+  private setPrevRange() {
     let start = this.first.weekday();
     let currentDate = this.first;
     while (start > 0) {
@@ -91,7 +91,7 @@ export class MonthRange {
     // console.log(this._prevRange.map(f => f.toDate()))
   }
 
-  setNextRange() {
+  private setNextRange() {
     let start = this.last.weekday();
     let currentDate = this.last;
     while (start < 6) {
@@ -101,13 +101,13 @@ export class MonthRange {
     }
   }
 
-  completeRange() {
+  private completeRange() {
     const length = this.range.length + this.prevRange.length + this.nextRange.length;
 
     if (length < 42) {
       let currentDate = this._nextRange[this._nextRange.length - 1] || this.last;
       let start = 0;
-      while (start < 7) {
+      while (start < 42 - length) {
         currentDate = currentDate.clone().add(1, 'days');
         this._nextRange.push(currentDate);
         start += 1;
