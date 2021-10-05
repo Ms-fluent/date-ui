@@ -1,15 +1,53 @@
 {
-  "name": "fluent-date",
-  "version": "0.0.0",
+  "name": "@ms-fluent/date-ui",
+  "version": "0.0.13",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "package": "ng-packagr -p package.json --config tsconfig.lib.json",
+    "publish": "npm publish dist --access public"
   },
-  "private": true,
+  "private": false,
+  "ngPackage": {
+    "assets": [
+      "src/styles"
+    ],
+    "lib": {
+      "entryFile": "src/components/index.ts",
+      "umdModuleIds": {
+        "gsap": "gsap",
+        "resize-observer-polyfill": "ResizeObserver"
+      }
+    },
+    "dest": "dist",
+    "whitelistedNonPeerDependencies": [
+      "@angular/animations",
+      "@angular/common",
+      "@angular/compiler",
+      "@angular/core",
+      "@angular/cdk",
+      "@angular/forms",
+      "@angular/platform-browser",
+      "@angular/platform-browser-dynamic",
+      "@angular/router",
+      "rxjs",
+      "tslib",
+      "zone.js",
+      "hammerjs",
+      "gsap",
+      "cleave.js",
+      "resize-observer-polyfill",
+      "@js-joda/core",
+      "bootstrap",
+      "gulp-shell",
+      "moment",
+      "office-ui-fabric-core"
+    ]
+  },
   "dependencies": {
     "@angular/animations": "~11.0.3",
     "@angular/common": "~11.0.3",
@@ -20,9 +58,13 @@
     "@angular/platform-browser-dynamic": "~11.0.3",
     "@angular/router": "~11.0.3",
     "@js-joda/core": "^3.2.0",
+    "bootstrap": "^5.1.0",
+    "cleave.js": "^1.6.0",
     "gsap": "^3.7.1",
+    "gulp-shell": "^0.8.0",
     "moment": "^2.29.1",
     "office-ui-fabric-core": "^11.0.0",
+    "resize-observer-polyfill": "^1.5.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
@@ -43,7 +85,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "ng-packagr": "^9.0.0",
+    "ng-packagr": "^11.0.0",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",

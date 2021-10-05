@@ -12,11 +12,14 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import {MS_DATE_DEFAULT_OPTIONS, MsDateDefaultOptions} from '../date-options';
-import {MonthRange} from '../month';
+import {MS_DATE_DEFAULT_OPTIONS, MsDateDefaultOptions} from '../core';
+import {MonthRange} from '../core';
 import * as gsap from 'gsap';
-import {MsDatePickerDayTemplateContext, MsDatePickerHeaderTemplateContext} from '../date-picker';
-import {MsCalendarDayTemplate, MsCalendarHeaderTemplate} from './calendar-template-directives';
+import {
+  MsCalendarDayTemplate, MsCalendarDayTemplateContext,
+  MsCalendarHeaderTemplate,
+  MsCalendarHeaderTemplateContext
+} from './calendar-template-directives';
 
 @Component({
   templateUrl: 'calendar.html',
@@ -132,7 +135,7 @@ export class MsCalendar implements AfterViewInit {
 
   private _isInitialized: boolean = false;
 
-  private headerView: EmbeddedViewRef<MsDatePickerHeaderTemplateContext>;
+  private headerView: EmbeddedViewRef<MsCalendarHeaderTemplateContext>;
 
   constructor(private changeDetector: ChangeDetectorRef,
               @Inject(MS_DATE_DEFAULT_OPTIONS) private options: MsDateDefaultOptions) {
@@ -196,7 +199,7 @@ export class MsCalendar implements AfterViewInit {
   createHeaderView() {
     this.headerContainer.clear();
 
-    const context = new MsDatePickerHeaderTemplateContext(this.date);
+    const context = new MsCalendarHeaderTemplateContext(this.date);
     this.headerView = this.headerContainer.createEmbeddedView(this.headerTemplate.template, context);
     this.headerView.detectChanges();
   }
@@ -213,7 +216,7 @@ export class MsCalendar implements AfterViewInit {
     this.dayContainer.clear();
 
     days.forEach((item, index) => {
-      const context = new MsDatePickerDayTemplateContext(item.toDate(), index, month.range.indexOf(item) < 0);
+      const context = new MsCalendarDayTemplateContext(item.toDate(), index, month.range.indexOf(item) < 0);
       const view = this.dayContainer.createEmbeddedView(this.dayTemplate.template, context);
       view.detectChanges();
     })

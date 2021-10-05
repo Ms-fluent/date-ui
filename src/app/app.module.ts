@@ -3,16 +3,16 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {MsTimeTableModule} from '../components/time-table';
+import {MsTimeTableModule} from '../components';
 import {DatePickerComponent} from './date-picker/date-picker.component';
-import {MsDatePickerModule} from '../components/date-picker';
+import {MsDatePickerModule} from '../components';
 
 import * as moment from 'moment';
 import {CalendarComponent} from './calendar/calendar.component';
-import {CalendarModule} from '../components/calendar';
+import {CalendarModule} from '../components';
 import {TimeTableComponent} from './time-table/time-table.component';
 import {TimeLineComponent} from './time-line/time-line.component';
-import {MsTimeLineModule} from '../components/time-line';
+import {MsTimeLineModule} from '../components';
 import {FormsModule} from '@angular/forms';
 
 moment.locale('fr');

@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {MsDatePicker} from '../../components/date-picker';
+import {MsDatePicker} from '../../components/date-picker/public-api';
 
 @Component({
   templateUrl: 'date-picker.component.html'

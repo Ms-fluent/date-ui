@@ -16,7 +16,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {MsTimeLineItem, MsTimeLineItemDef, MsTimeLineItemGroup} from './time-line-item';
-import {MS_DATE_DEFAULT_OPTIONS, MsDateDefaultOptions} from '../date-options';
+import {MS_DATE_DEFAULT_OPTIONS, MsDateDefaultOptions} from '../core';
 import {MsTimeLineGroupContent} from './time-line-group-content';
 
 @Component({
@@ -50,7 +50,7 @@ export class MsTimeLine<T extends MsTimeLineItem> implements OnInit, AfterViewIn
 
   private _groups: MsTimeLineItemGroup<T>[];
 
-  private _groupViews: ComponentRef<MsTimeLineGroupContent>[] = [];
+  private _groupViews: ComponentRef<MsTimeLineGroupContent<T>>[] = [];
 
   get keys(): Date[] {
     return [...this.groupMap.keys()].map(k => new Date(k));
@@ -97,10 +97,10 @@ export class MsTimeLine<T extends MsTimeLineItem> implements OnInit, AfterViewIn
     })
   }
 
-  _createGroupView(group: MsTimeLineItemGroup<T>): ComponentRef<MsTimeLineGroupContent> {
+  _createGroupView(group: MsTimeLineItemGroup<T>): ComponentRef<MsTimeLineGroupContent<T>> {
     const injector: Injector = this._createGroupInjector(group);
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MsTimeLineGroupContent);
-    const result = this.container.createComponent<MsTimeLineGroupContent>(componentFactory, group.index, injector);
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory<MsTimeLineGroupContent<T>>(MsTimeLineGroupContent);
+    const result = this.container.createComponent<MsTimeLineGroupContent<T>>(componentFactory, group.index, injector);
     result.hostView.detectChanges();
     this._groupViews.push(result);
     return result;
@@ -161,6 +161,8 @@ export class MsTimeLine<T extends MsTimeLineItem> implements OnInit, AfterViewIn
     if (group.items.length === 1) {
       view.destroy();
       this._groupViews = this._groupViews.filter(g => g !== view);
+      this.groupMap.delete(this.getKey(item));
+      this._groups = this._groups.filter(g => g.key !== this.getKey(item));
     } else {
       view.instance.removeItem(item);
     }

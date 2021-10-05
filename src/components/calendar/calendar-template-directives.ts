@@ -1,8 +1,7 @@
-import {Directive, TemplateRef} from "@angular/core";
+import {Directive, TemplateRef} from '@angular/core';
 
 export class MsCalendarHeaderTemplateContext {
-  constructor(public $implicit: Date) {
-  }
+  constructor(public $implicit: Date) {}
 }
 
 @Directive({

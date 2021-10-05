@@ -1,12 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-html {
+html, body {
   font-family: "Segoe UI", sans-serif;
   background-image: url("assets/537171.jpg");
 }
 
 @import "~office-ui-fabric-core/dist/css/Fabric";
+@import "~bootstrap/dist/css/bootstrap.min.css";
 
-@import "styles/time-table";
-@import "styles/date-picker";
-@import "styles/calendar";
-@import "styles/time-line";
+@import "styles/fluent-date";

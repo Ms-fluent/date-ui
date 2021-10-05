@@ -1,6 +1,5 @@
-import { Injectable, InjectionToken } from "@angular/core";
-import { Subject } from "rxjs";
-import { FR_DAYS_OF_WEEKS, FR_SHORT_DAYS_OF_WEEK } from "../date-intl";
+import {Subject} from 'rxjs';
+import {FR_DAYS_OF_WEEKS, FR_SHORT_DAYS_OF_WEEK} from '../core';
 
 export interface MsTimeTableIntl {
   /**
@@ -19,7 +18,7 @@ export interface MsTimeTableIntl {
 
 
 export class MsTimeTableIntlFr implements  MsTimeTableIntl{
-   
+
   readonly changes: Subject<void> = new Subject<void>();
 
     daysOfWeek = FR_DAYS_OF_WEEKS;

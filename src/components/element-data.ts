@@ -1,4 +1,4 @@
-import {MsTimeTableItem} from './time-table';
+import {MsTimeTableItem} from './time-table/public-api';
 
 export const UNIQUE_HOURS = ['08:00', '09:00', '10:00', '11:00', '13:00'];
 export const TIME_TABLE_DATA: Array<any & MsTimeTableItem> = [

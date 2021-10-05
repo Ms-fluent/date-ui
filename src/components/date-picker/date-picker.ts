@@ -13,10 +13,10 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as gsap from 'gsap';
-import {MonthRange} from '../month';
-import {MS_DATE_DEFAULT_OPTIONS, MsDateDefaultOptions} from '../date-options';
+import {MonthRange} from '../core/month';
+import {MS_DATE_DEFAULT_OPTIONS, MsDateDefaultOptions} from '../core/date-options';
 import {MsDatePickerHeaderTemplate, MsDatePickerHeaderTemplateContext} from './date-picker-header';
 import {MsDatePickerDayTemplate, MsDatePickerDayTemplateContext} from './date-picker-day';
 import {Observable} from 'rxjs';
@@ -198,6 +198,7 @@ export class MsDatePicker implements AfterViewInit, AfterContentInit {
     await gsap.gsap.to(this.bodyHost, 0.1, {opacity: 0, translateX: -20});
     this._monthRange = this._monthRange.nextMonth();
     this.refreshDayViews();
+    this.changeDetector.markForCheck();
 
     await gsap.gsap.fromTo(this.bodyHost, {opacity: 0, translateX: 20, duration: 0.2}, {opacity: 1, translateX: 0});
   }
@@ -206,6 +207,7 @@ export class MsDatePicker implements AfterViewInit, AfterContentInit {
     await gsap.gsap.to(this.bodyHost, 0.1, {opacity: 0, translateX: 20});
     this._monthRange = this._monthRange.prevMonth();
     this.refreshDayViews();
+    this.changeDetector.markForCheck();
 
     await gsap.gsap.fromTo(this.bodyHost, {opacity: 0, translateX: -20, duration: 0.2}, {opacity: 1, translateX: 0});
   }

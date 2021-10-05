@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
-import {MsTimeLine, MsTimeLineItem} from '../../components/time-line';
-import * as moment from 'moment';
+import {MsTimeLine, MsTimeLineItem} from '../../components';
+import moment from 'moment';
 
 export class Course implements MsTimeLineItem {
   startDate: Date;

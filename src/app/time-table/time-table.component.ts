@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {MsTimeTableItem} from "../../components/time-table";
+import {MsTimeTableItem} from "../../components/time-table/public-api";
 
 @Component({
   templateUrl: 'time-table.component.html'

@@ -1,6 +1,6 @@
 <div style="display: flex">
   <MsTimeLine [items]="items">
-    <div *MsTimeLineItemDef="let item"style="display: flex; background-color: rgba(0, 0, 0, 0.3); padding: 4px">
+    <div *MsTimeLineItemDef="let item" style="display: flex; background-color: rgba(0, 0, 0, 0.3); padding: 4px">
       <div style="border-right: 3px solid rgba(255, 255, 255, 0.7); ; padding-right: 8px">
         <div>
           {{formatDate(item.startDate)}}
