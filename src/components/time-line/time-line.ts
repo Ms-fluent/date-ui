@@ -10,7 +10,7 @@ import {
   Inject,
   Injector,
   Input,
-  OnInit,
+  OnInit, StaticProvider,
   ViewChild,
   ViewContainerRef,
   ViewEncapsulation
@@ -28,7 +28,7 @@ import {MsTimeLineGroupContent} from './time-line-group-content';
     class: 'ms-time-line'
   }
 })
-export class MsTimeLine<T extends MsTimeLineItem> implements OnInit, AfterViewInit {
+export class MsTimeLine<T extends MsTimeLineItem = MsTimeLineItem> implements OnInit, AfterViewInit {
   @Input()
   get items(): T[] {
     return this._items.slice();
@@ -107,22 +107,12 @@ export class MsTimeLine<T extends MsTimeLineItem> implements OnInit, AfterViewIn
   }
 
   _createGroupInjector(group: MsTimeLineItemGroup<T>): Injector {
-    return {
-      get: (token: any, notFoundValue?: any): any => {
-        const customTokens = new WeakMap<any, any>([
-          [MsTimeLineItemGroup, group],
-          [MsTimeLineItemDef, this.itemDef],
-          [MsTimeLine, this]]);
-
-        const value = customTokens.get(token);
-
-        if (typeof value !== 'undefined') {
-          return value;
-        }
-
-        return this.injector.get<any>(token, notFoundValue);
-      }
-    };
+    const providers: StaticProvider[] = [
+      {provide: MsTimeLineItemGroup, useValue: group},
+      {provide: MsTimeLineItemDef, useValue: this.itemDef},
+      {provide: MsTimeLine, useValue: this}
+    ];
+    return Injector.create({providers});
   }
 
 

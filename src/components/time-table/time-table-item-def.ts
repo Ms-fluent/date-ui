@@ -1,42 +1,25 @@
 import {Directive, Input, TemplateRef} from '@angular/core';
 import {MsTimeTableItem} from './time-table-item';
 
-export class MsTimeTableItemContext {
-  constructor(public $implicit: MsTimeTableItem,
+export class MsTimeTableItemContext<T extends MsTimeTableItem = MsTimeTableItem> {
+  constructor(public $implicit: T,
               public index: number,
               public total: number) {
   }
 }
 
 @Directive({
-  selector: '[msTimeTableItemDef], [ms-timeTableItemDef]'
+  selector: '[MsTimeTableItemDef]'
 })
-export class MsTimeTableItemDef {
-
+export class MsTimeTableItemDef<T extends MsTimeTableItem> {
   /**
    * Items displayed on the time table.
    * Use this property if you want to benefit of IDE autocomplete.
    * The use of this property will override items of the parent timetable.
    */
-  @Input('msTimeTableItemDefOf')
-  _items1: MsTimeTableItem[];
+  @Input('MsTimeTableItemDefOf')
+  items: T[];
 
-  /**
-   * Items displayed on the time table.
-   * Use this property if you want to benefit of IDE autocomplete.
-   * The use of this property will override items of the parent timetable.
-   */
-  @Input('ms-timeTableItemDefOf')
-  _items2: MsTimeTableItem[];
+  constructor(public template: TemplateRef<MsTimeTableItemContext<T>>) {}
 
-  constructor(public template: TemplateRef<MsTimeTableItemContext>) {
-
-  }
-
-  get items(): MsTimeTableItem[] {
-    if (this._items1) {
-      return this._items1;
-    }
-    return this._items2;
-  }
 }

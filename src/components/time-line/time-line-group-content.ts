@@ -23,7 +23,7 @@ export class MsTimeLineGroupContent<T extends MsTimeLineItem> implements AfterVi
     this.itemContainer.clear();
     this.group.items.forEach((item) => {
       this.addItem(item);
-    })
+    });
   }
 
   addItem(item: T) {

@@ -1,24 +1,3 @@
-<table class="ms-time-table-table">
-  <thead>
-  <tr>
-    <td class="ms-time-table-hourCell">
-      <span class="ms-time-table-hourCell-hour" style="transform: translateY(16px)">{{getTimes()[0]}}</span>
-    </td>
-    <th #column *ngFor="let day of getDays()" class="ms-time-table-dayCell">{{getDay(day)}}</th>
-  </tr>
-  </thead>
-
-  <tbody class="ms-time-table-body">
-  <tr *ngFor="let hour of getTimes().slice(1); let i=index" class="ms-time-table-row" #row
-      style="height:  {{getRowHeight(i + 1)}}px">
-    <td class="ms-time-table-hourCell">
-      <span class="ms-time-table-hourCell-hour" style="transform: translateY({{getRowTranslate(i+1)}}px)">{{hour}}</span>
-    </td>
-    <td class="ms-time-table-cell" *ngFor="let date of getDays()"></td>
-  </tr>
-  </tbody>
-</table>
-
-<ng-container #container>
-
-</ng-container>
+<div class="ms-time-table-layout" #layout>
+  <ng-container #container></ng-container>
+</div>

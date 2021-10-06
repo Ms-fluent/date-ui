@@ -1,22 +1,34 @@
 import {
-  AfterContentInit, AfterViewInit,
+  AfterContentInit,
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild, ElementRef, EventEmitter, Inject,
-  Input, Output, QueryList, ViewChild, ViewChildren, ViewContainerRef,
+  ComponentFactoryResolver,
+  ComponentRef,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Injector,
+  Input,
+  Output,
+  StaticProvider,
+  ViewChild,
+  ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import {LocalTime} from '@js-joda/core';
 import {MsTimeTableItem} from './time-table-item';
-import {MsTimeTableItemContext, MsTimeTableItemDef} from './time-table-item-def';
-import {MS_TIME_TABLE_DEFAULT_OPTIONS, MsTimeTableColumnWidth, MsTimeTableDefaultOptions} from './time-table-options';
+import {MsTimeTableItemDef} from './time-table-item-def';
+import {MS_TIME_TABLE_DEFAULT_OPTIONS, MsTimeTableDefaultOptions} from './time-table-options';
+import {MsTimeTableItemGroup} from './time-table-item-group';
+import {MsTimeTableGroup} from './time-table-group';
 
 let uniqueId = 0;
 
 @Component({
   templateUrl: 'time-table.html',
-  selector: 'ms-time-table, msTimeTable, MsTimeTable',
+  selector: 'MsTimeTable',
   exportAs: 'msTimeTable',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,7 +38,7 @@ let uniqueId = 0;
     '[attr.role]': 'role'
   }
 })
-export class MsTimeTable implements AfterContentInit, AfterViewInit {
+export class MsTimeTable<T extends MsTimeTableItem> implements AfterContentInit, AfterViewInit {
 
   private _uniqueId: string = `ms-time-table-${uniqueId++}`;
 
@@ -37,33 +49,6 @@ export class MsTimeTable implements AfterContentInit, AfterViewInit {
   @Input()
   role: string = 'timetable';
 
-  /** The width of the columns. */
-  @Input()
-  columnWidth: MsTimeTableColumnWidth = this._defaultOptions.columnWidth;
-
-
-  @Input()
-  rowHeight: number = this._defaultOptions.rowHeight;
-
-  /**
-   * Initial provided items.
-   */
-  @Input('items')
-  inputItems: MsTimeTableItem[] = [];
-
-  /** The form used to display days of week. */
-  @Input()
-  dayFormat: 'short' | 'normal' = this._defaultOptions.dayFormat;
-
-  /** Formatter used to display time. */
-  @Input()
-  timeFormat: string = this._defaultOptions.timeFormat;
-
-
-  @Input()
-  compareFn: (t1: MsTimeTableItem, t2: MsTimeTableItem) => boolean = this._defaultOptions.compareFn;
-
-
   @Output()
   onchange: EventEmitter<void> = new EventEmitter<void>();
 
@@ -71,164 +56,120 @@ export class MsTimeTable implements AfterContentInit, AfterViewInit {
    * Template of a time table item.
    */
   @ContentChild(MsTimeTableItemDef)
-  template: MsTimeTableItemDef;
+  template: MsTimeTableItemDef<T>;
 
   @ViewChild('container', {read: ViewContainerRef})
   container: ViewContainerRef;
 
-  @ViewChildren('row')
-  rows: QueryList<ElementRef<HTMLElement>>;
+  @ViewChild('layout')
+  layout: ElementRef<HTMLDivElement>;
 
-  @ViewChildren('column')
-  columns: QueryList<ElementRef<HTMLElement>>;
+  get layoutHost(): HTMLDivElement {
+    return this.layout.nativeElement;
+  }
 
   _contentLoaded: boolean = false;
 
-  private _items: Array<MsTimeTableItem>;
-  get items(): Array<MsTimeTableItem> {
+  private _items: Array<T>;
+
+  get items(): Array<T> {
     return this._items;
   }
 
+  private groupMap: Map<number, T[]> = new Map<number, T[]>();
+  get keys(): Date[] {
+    return [...this.groupMap.keys()].map(k => new Date(k));
+  }
+
+  private _groups: MsTimeTableItemGroup<T>[];
+
+  private _groupViews: ComponentRef<MsTimeTableGroup<T>>[] = [];
+
   constructor(private _changeDetectorRef: ChangeDetectorRef,
+              private componentFactoryResolver: ComponentFactoryResolver,
               @Inject(MS_TIME_TABLE_DEFAULT_OPTIONS) private _defaultOptions: MsTimeTableDefaultOptions) {
 
   }
 
-  ngAfterContentInit() {
-    if (!this.template) {
-      throw new Error('Missing time-Table template. Define a msTimeTableDef inside the component.')
-    }
-
-    if (this.template.items) {
-      this._items = this.template.items.slice();
-    } else if (this.inputItems) {
-      this._items = this.inputItems.slice();
-    } else {
-      throw new Error('Missing input items.')
-    }
-    this._contentLoaded = true;
+  ngAfterContentInit(): void {
   }
 
   ngAfterViewInit(): void {
-    this.items.forEach((item, index) => this._createItemView(item, index));
+    if (!this.template) {
+      throw new Error('You must provide a MsTimeTableItemDef as item template.');
+    }
+    this._items = this.template.items.slice();
 
-    console.log(this.rows.length)
+    this._items.forEach(item => this.insertItemInGroup(item));
+    this._groups = this.getGroups();
+    console.log(this._groups);
 
+    this._groups.forEach(group => {
+      this._createGroupView(group);
+    })
   }
 
-  /**
-   * Append new items on the table.
-   * @param items Items to add.
-   */
-  add(...items: MsTimeTableItem[]) {
-    for (const item of items) {
-      this._addItem(item);
+  addItem(item: T) {
+    let group = this._groups.find(g => g.dayOfWeek === item.dayOfWeek);
+    this._items.push(item);
+
+    if (group) {
+      this._addItemInGroupView(group, item);
+    } else {
+      group = new MsTimeTableItemGroup();
+      group.dayOfWeek = item.dayOfWeek;
+      group.items = [item];
+
+      this._groups.push(group);
+      group.index = this._groups.sort((g, h) => g.dayOfWeek - h.dayOfWeek).indexOf(group);
+      this.groupMap.set(group.dayOfWeek, group.items);
+
+      this._createGroupView(group);
     }
   }
 
-  _addItem(item: MsTimeTableItem) {
-    if (!this.contains(item)) {
-      this._items.push(item);
-    }
+  _addItemInGroupView(group: MsTimeTableItemGroup<T>, item: T) {
+    group.items.push(item);
+    const view = this._groupViews.find(g => g.instance.group === group);
+    view.instance.addItem(item);
   }
 
-  /**
-   * Removes items on the table.
-   * @param items Items to remove.
-   */
-  remove(...items: MsTimeTableItem[]) {
-    for (const item of items) {
-
-    }
+  _createGroupView(group: MsTimeTableItemGroup<T>): ComponentRef<MsTimeTableGroup<T>> {
+    const injector: Injector = this._createGroupInjector(group);
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory<MsTimeTableGroup<T>>(MsTimeTableGroup);
+    const result = this.container.createComponent<MsTimeTableGroup<T>>(componentFactory, group.index, injector);
+    result.hostView.detectChanges();
+    this._groupViews.push(result);
+    return result;
   }
 
-
-  removeIf(filterFn: (item: MsTimeTableItem) => boolean) {
-
+  _createGroupInjector(group: MsTimeTableItemGroup<T>): Injector {
+    const providers: StaticProvider[] = [
+      {provide: MsTimeTableItemGroup, useValue: group},
+      {provide: MsTimeTableItemDef, useValue: this.template},
+      {provide: MsTimeTable, useValue: this}
+    ];
+    return Injector.create({providers});
   }
 
-  _createItemView(item: MsTimeTableItem, index: number) {
-    const context = new MsTimeTableItemContext(item, index, this.items.length);
-    const viewRef = this.container.createEmbeddedView(this.template.template, context, index);
+  insertItemInGroup(item: T) {
+    const key = item.dayOfWeek;
 
-    const node: HTMLDivElement = viewRef.rootNodes[0];
-    node.className = 'ms-time-table-item';
-
-    node.style.height = `${this.getRowHeight(index + 1)}px`;
-    node.style.left = `${this.getCellX(index)}px`;
-    node.style.top = `${this.getCellY(index)}px`;
-    node.style.width = `${this.getCellWidth(index)}px`;
-
-
-    viewRef.detectChanges();
-  }
-
-  /**
-   * Get times displayed at the left boundary of the table.
-   * If the string table is used, you must use the HH:mm format.
-   */
-  getTimes(): Array<LocalTime> {
-    const hours: Array<string | LocalTime> = [...this._items.map(t => [t.startHour, t.endHour])]
-      .reduce((a, b) => a.concat(b));
-
-    let uniqueHours = [...new Set(hours)].map(t => {
-      if (t instanceof LocalTime) {
-        return t;
-      }
-      return LocalTime.parse(t);
-    });
-
-    uniqueHours = uniqueHours.sort((h1, h2) => h1.toSecondOfDay() - h2.toSecondOfDay());
-    return uniqueHours
-  }
-
-  /**
-   * Days of week displayed at the top of the table.
-   */
-  getDays(): Array<number> {
-    return [...new Set(this.items.map(t => t.dayOfWeek))];
-  }
-
-  contains(item: MsTimeTableItem) {
-    if (item === undefined) {
-      return false;
+    if (!this.groupMap.has(key)) {
+      this.groupMap.set(key, []);
     }
 
-    return this._items.find(_item => this.compareFn(_item, item));
+    this.groupMap.get(key).push(item);
   }
 
-  getDay(index: number) {
-    return this._defaultOptions.intlProvider.daysOfWeek[index];
-  }
-
-  getRowTranslate(index: number): number {
-    if (index === 0) {
-      return 0;
-    }
-    return this.getRowHeight(index) / 2;
-  }
-
-  getRowHeight(index: number): number {
-    if (index === 0) {
-      return 0;
-    }
-    const prevTime = this.getTimes()[index - 1];
-    const prevMinutes = (this.getTimes()[index].toSecondOfDay() - prevTime.toSecondOfDay()) / 60 / 60 * this.rowHeight;
-    return prevMinutes;
-  }
-
-  getCellX(index: number): number {
-    const x = this.columns.toArray()[index].nativeElement.offsetLeft;
-    return x;
-  }
-
-  getCellY(index: number): number {
-    const y = this.rows.toArray()[index].nativeElement.offsetTop;
-    return y;
-  }
-
-  getCellWidth(index: number): number {
-    return this.columns.toArray()[index].nativeElement.offsetWidth;
+  getGroups(): MsTimeTableItemGroup<T>[] {
+    return [...this.groupMap.entries()].map((entry, index) => {
+      const group = new MsTimeTableItemGroup<T>();
+      group.index = index;
+      group.dayOfWeek = entry[0];
+      group.items = entry[1];
+      return group;
+    })
   }
 }
 

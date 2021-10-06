@@ -1,52 +1,66 @@
-$ms-time-table-borderColor: #393939 !default;
-$ms-time-table-color: #393939 !default;
+$ms-time-table-bgColor: rgba(0, 0, 0, 0.5) !default;
+$ms-time-table-header-bgColor: rgba(0, 0, 0, 0.1) !default;
+$ms-time-table-group-borderColor: rgba(255, 255, 255, 0.3) !default;
+$ms-time-table-fontColor: #faf9f8 !default;
+
+$ms-calendar-day-height: 100px !default;
 
 .ms-time-table {
-  display: block;
-  border-collapse: collapse;
-  width: 100%;
-  color: $ms-time-table-color;
-  position: relative;
-  border: 1px solid red;
-}
-
-.ms-time-table-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.ms-time-table-body {
-
-}
-
-.ms-time-table-dayCell {
-  padding-bottom: 14px;
-  border-bottom: 1px solid $ms-time-table-borderColor;
-  text-align: left;
-}
-
-.ms-time-table-row {
-  border-bottom: 1px solid $ms-time-table-borderColor;
-  border-collapse: collapse;
-}
-
-.ms-time-table-hourCell {
-  border-bottom: 1px solid white;
-  text-align: right;
-  width: 1px;
-}
-
-.ms-time-table-hourCell-hour {
   display: inline-block;
-  padding-right: 14px;
+  background-color: $ms-time-table-bgColor;
+  color: $ms-time-table-fontColor;
+
+  backdrop-filter: blur(40px);
+
 }
 
-.ms-time-table-cell {
-  border-bottom: 1px solid $ms-time-table-borderColor;;
-  border-collapse: collapse;
+.ms-time-table-layout {
+  display: table;
+}
+
+.ms-time-table-group {
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  display: table-row;
+
+  & .ms-time-table-group-cell {
+    display: table-cell;
+    padding: 12px;
+    border-bottom: 1px solid $ms-time-table-group-borderColor;
+  }
+
+  &:last-child .ms-time-table-group-cell {
+    border-bottom: none;
+  }
 }
 
 .ms-time-table-item {
-  position: absolute;
-  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.ms-time-table-date {
+  width: auto;
+}
+
+.ms-time-table-date-day {
+  text-transform: uppercase;
+}
+
+.ms-time-table-date-date {
+  font-weight: 200;
+}
+
+.ms-time-table-items {
+
+  & > * {
+    margin-top: 12px;
+  }
+  & *:first-child {
+    margin: 0;
+  }
+}
+
+.ms-time-table-item {
+
 }

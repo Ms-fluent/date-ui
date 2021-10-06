@@ -14,12 +14,12 @@ export interface MsTimeTableItem {
      * The start hour.
      * If the string type is used, the time format must be hh:mm.
      */
-    startHour: string | LocalTime;
+    startHour: LocalTime;
 
 
     /**
      * The end hour.
      * If the string type is used, the time format must be hh:mm.
      */
-    endHour: string | LocalTime;
+    endHour: LocalTime;
 }
